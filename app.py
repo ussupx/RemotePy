@@ -22,7 +22,7 @@ def gen(camera):
 def video_feed():
 	return Response(gen(Camera()), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
+import pygetwindow as gw
 @app.route('/mouse', methods=['POST'])
 def mouse_event():
 	# co-ordinates of browser image event
@@ -30,7 +30,11 @@ def mouse_event():
 	# size of browser image
 	imx, imy = float(request.form.get('X')), float(request.form.get('Y'))
 	# size of desktop
-	dx, dy = pyautogui.size()
+	k = gw.getWindowsWithTitle('Mozilla Firefox')
+	HWND = k[0]._hWnd
+	dy=k[0].height
+	dx=k[0].width
+	#dx, dy = pyautogui.size()
 	# co-ordinates of desktop event
 	x, y = dx*(ex/imx), dy*(ey/imy)
 	# mouse event
